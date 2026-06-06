@@ -1,70 +1,141 @@
+@{
+    var isTeacher = User.IsInRole("Teacher");
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    string ActiveIf(string ctrl, string act) =>
+        currentController == ctrl && currentAction == act ? "active" : "";
+}
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Sınav Oluşturma Sistemi</title>
+    <title>@ViewData["Title"] - Sınav Yönetim Sistemi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="~/css/app.css" />
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#1e3a8a',
-                        secondary: '#3b82f6',
-                    }
+                        primary: { DEFAULT: '#4f46e5', hover: '#4338ca', light: '#eef2ff' },
+                        ink: { DEFAULT: '#0f172a', 500: '#64748b', 700: '#334155' },
+                        accent: { DEFAULT: '#10b981', hover: '#059669' },
+                    },
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
                 }
             }
         }
     </script>
 </head>
-<body class="bg-slate-50 min-h-screen">
+<body class="min-h-screen font-sans antialiased">
     @if (User.Identity?.IsAuthenticated == true)
     {
-        <nav class="bg-white shadow-sm border-b border-slate-200">
+        <nav class="navbar sticky top-0 z-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16">
-                    <div class="flex items-center">
-                        <a class="flex-shrink-0 flex items-center" href="/">
-                            <svg class="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            <span class="ml-2 text-xl font-bold text-primary">Sınav Sistemi</span>
+                <div class="flex justify-between items-center h-16">
+                    <!-- Brand + desktop nav -->
+                    <div class="flex items-center gap-8">
+                        <a href="/" class="flex items-center gap-2.5">
+                            <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-white shadow-sm">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                            </span>
+                            <span class="text-lg font-bold text-ink tracking-tight">Sınav Sistemi</span>
                         </a>
-                        @if (User.IsInRole("Teacher"))
-                        {
-                            <div class="hidden md:ml-6 md:flex md:space-x-8">
-                                <a asp-controller="Teacher" asp-action="Dashboard" class="border-transparent text-slate-600 hover:border-primary hover:text-primary inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Öğretmen Paneli</a>
-                                <a asp-controller="Teacher" asp-action="CreateTest" class="border-transparent text-slate-600 hover:border-primary hover:text-primary inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Sınav Oluştur</a>
-                            </div>
-                        }
-                        else if (User.IsInRole("Student"))
-                        {
-                            <div class="hidden md:ml-6 md:flex md:space-x-8">
-                                <a asp-controller="Student" asp-action="Dashboard" class="border-transparent text-slate-600 hover:border-primary hover:text-primary inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Öğrenci Paneli</a>
-                            </div>
-                        }
-                    </div>
-                    <div class="flex items-center">
-                        <div class="flex items-center space-x-4">
-                            <div class="text-right">
-                                <p class="text-sm font-medium text-slate-900">@User.Identity?.Name</p>
-                                <p class="text-xs text-slate-500">@(User.IsInRole("Teacher") ? "Öğretmen" : "Öğrenci")</p>
-                            </div>
-                            <form asp-controller="Account" asp-action="Logout" method="post">
-                                <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-900 transition-colors">Çıkış Yap</button>
-                            </form>
+
+                        <div class="hidden md:flex items-center gap-1">
+                            @if (isTeacher)
+                            {
+                                <a asp-controller="Teacher" asp-action="Dashboard" class="nav-link @ActiveIf("Teacher", "Dashboard")">Panelim</a>
+                                <a asp-controller="Teacher" asp-action="CreateTest" class="nav-link @ActiveIf("Teacher", "CreateTest")">Sınav Oluştur</a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Student" asp-action="Dashboard" class="nav-link @ActiveIf("Student", "Dashboard")">Sınavlar</a>
+                                <a asp-controller="Student" asp-action="History" class="nav-link @ActiveIf("Student", "History")">Geçmişim</a>
+                            }
                         </div>
                     </div>
+
+                    <!-- Desktop user area -->
+                    <div class="hidden md:flex items-center gap-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary-light text-primary font-bold text-sm">
+                                @(User.Identity?.Name?.Substring(0, 1).ToUpper())
+                            </span>
+                            <div class="leading-tight">
+                                <p class="text-sm font-semibold text-ink">@User.Identity?.Name</p>
+                                <p class="text-xs text-ink-500">@(isTeacher ? "Öğretmen" : "Öğrenci")</p>
+                            </div>
+                        </div>
+                        <a asp-controller="Account" asp-action="ChangePassword" class="nav-link text-sm">Şifre</a>
+                        <form asp-controller="Account" asp-action="Logout" method="post">
+                            <button type="submit" class="btn btn-ghost px-4 py-2 text-sm">Çıkış</button>
+                        </form>
+                    </div>
+
+                    <!-- Mobile hamburger -->
+                    <button id="mobileMenuBtn" type="button" aria-expanded="false" aria-label="Menü"
+                            class="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-lg text-ink-700 hover:bg-primary-light">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile menu -->
+            <div id="mobileMenu" class="hidden md:hidden border-t border-[var(--border)] bg-white">
+                <div class="px-4 py-3 space-y-1">
+                    <div class="flex items-center gap-3 px-2 py-3 mb-1 border-b border-[var(--border)]">
+                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-light text-primary font-bold">
+                            @(User.Identity?.Name?.Substring(0, 1).ToUpper())
+                        </span>
+                        <div>
+                            <p class="text-sm font-semibold text-ink">@User.Identity?.Name</p>
+                            <p class="text-xs text-ink-500">@(isTeacher ? "Öğretmen" : "Öğrenci")</p>
+                        </div>
+                    </div>
+                    @if (isTeacher)
+                    {
+                        <a asp-controller="Teacher" asp-action="Dashboard" class="nav-link block">Panelim</a>
+                        <a asp-controller="Teacher" asp-action="CreateTest" class="nav-link block">Sınav Oluştur</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Student" asp-action="Dashboard" class="nav-link block">Sınavlar</a>
+                        <a asp-controller="Student" asp-action="History" class="nav-link block">Geçmişim</a>
+                    }
+                    <a asp-controller="Account" asp-action="ChangePassword" class="nav-link block">Şifre Değiştir</a>
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="pt-2">
+                        <button type="submit" class="btn btn-ghost w-full py-2.5 text-sm">Çıkış Yap</button>
+                    </form>
                 </div>
             </div>
         </nav>
     }
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        @RenderBody()
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        <div class="animate-in">
+            @RenderBody()
+        </div>
     </main>
 
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <footer class="mt-12 py-6 border-t border-[var(--border)]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <p class="text-sm text-ink-500">© 2026 Sınav Yönetim Sistemi · Bitirme Projesi</p>
+            </div>
+        </footer>
+    }
+
+    <script src="~/js/app.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

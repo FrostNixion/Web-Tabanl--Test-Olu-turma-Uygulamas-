@@ -178,4 +178,24 @@ public class StudentController : Controller
 
         return View(model);
     }
+
+    public async Task<IActionResult> History()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null)
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        var results = await _repository.GetTestResultsByStudentIdAsync(user.Id);
+        var resultsWithTests = new List<(TestResult Result, Test? Test)>();
+
+        foreach (var result in results)
+        {
+            var test = await _repository.GetTestByIdAsync(result.TestId);
+            resultsWithTests.Add((result, test));
+        }
+
+        return View(resultsWithTests.OrderByDescending(x => x.Result.TakenAt).ToList());
+    }
 }

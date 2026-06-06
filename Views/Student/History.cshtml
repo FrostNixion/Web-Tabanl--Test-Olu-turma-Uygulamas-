@@ -1,0 +1,55 @@
+@model List<(TestCreationSystem.Models.TestResult Result, TestCreationSystem.Models.Test? Test)>
+
+@{
+    ViewData["Title"] = "Sınav Geçmişi";
+}
+
+<div class="space-y-6">
+    <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-bold text-ink">Sınav Geçmişi</h1>
+        <a asp-action="Dashboard" class="btn btn-soft py-2">Panelime Dön</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="card p-8 text-center">
+            <p class="text-ink-500">Henüz hiç sınav çözmediniz.</p>
+        </div>
+    }
+    else
+    {
+        <div class="grid gap-4" data-stagger>
+            @foreach (var item in Model)
+            {
+                var result = item.Result;
+                var test = item.Test;
+                var totalPoints = test?.Questions.Sum(q => q.Points) ?? 0;
+                var percentage = totalPoints > 0 ? (result.Score * 100.0 / totalPoints) : 0;
+                var percentageInt = (int)percentage;
+
+                <div class="card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-ink text-lg mb-1">@test?.Title ?? "Silinmiş Sınav"</h3>
+                        <p class="text-sm text-ink-500">@result.TakenAt.ToString("dd MMMM yyyy, HH:mm")</p>
+                    </div>
+
+                    <div class="flex items-center gap-6">
+                        <div class="text-right">
+                            <p class="text-2xl font-bold text-ink">@result.Score<span class="text-sm font-normal text-ink-500">/@totalPoints</span></p>
+                            <p class="text-xs text-ink-500">Puan</p>
+                        </div>
+
+                        <div class="w-32">
+                            <div class="progress-track">
+                                <div class="progress-fill @(percentageInt >= 70 ? "is-accent" : percentageInt >= 50 ? "" : "is-danger")" style="width: @percentageInt%"></div>
+                            </div>
+                            <p class="text-xs text-ink-500 mt-1 text-center">@percentageInt%</p>
+                        </div>
+
+                        <a asp-action="ViewResult" asp-route-id="@result.Id" class="btn btn-ghost px-4 py-2">Detay</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
