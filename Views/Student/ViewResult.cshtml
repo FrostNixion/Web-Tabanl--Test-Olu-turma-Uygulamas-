@@ -1,0 +1,33 @@
+@model TestResultViewModel
+
+@{
+    ViewData["Title"] = "Test Result";
+}
+
+<div class="mb-4">
+    <h2>Testi Result: @Model.TestTitle</h2>
+    <p class="text-muted">Completed on: @Model.TakenAt.ToString("MM/dd/yyyy HH:mm")</p>
+</div>
+
+<div class="card mb-4 shadow">
+    <div class="card-body text-center">
+        <h3>Your Score: @Model.Score / @Model.TotalPoints</h3>
+        <div class="progress mt-3">
+            @{
+                var percentage = Model.TotalPoints > 0 ? (Model.Score * 100.0 / Model.TotalPoints) : 0;
+            }
+            <div class="progress-bar @(percentage >= 70 ? "bg-success" : percentage >= 50 ? "bg-warning" : "bg-danger")" 
+                 role="progressbar" 
+                 style="width: @percentage%;" 
+                 aria-valuenow="@percentage" 
+                 aria-valuemin="0" 
+                 aria-valuemax="100">
+                @percentage.ToString("0.0")%
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mb-3">
+    <a asp-action="Dashboard" class="btn btn-primary">Back to Dashboard</a>
+</div>

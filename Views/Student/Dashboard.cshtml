@@ -1,0 +1,53 @@
+@model List<AvailableTestViewModel>
+
+@{
+    ViewData["Title"] = "Student Dashboard";
+}
+
+<h2 class="mb-4">Available Tests</h2>
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-info">
+        <h4>No tests available</h4>
+        <p>There are no tests available to take at this time.</p>
+    </div>
+}
+else
+{
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">@item.Test.Title</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-2"><strong>Description:</strong> @item.Test.Description</p>
+                        <p class="mb-2"><strong>Duration:</strong> @item.Test.DurationInMinutes minutes</p>
+                        <p class="mb-2"><strong>Questions:</strong> @item.Test.Questions.Count</p>
+                        @if (item.IsCompleted)
+                        {
+                            <p class="mb-0"><strong>Status:</strong> <span class="badge bg-success">Completed - Score: @item.Score</span></p>
+                        }
+                        else
+                        {
+                            <p class="mb-0"><strong>Status:</strong> <span class="badge bg-warning">Not Taken</span></p>
+                        }
+                    </div>
+                    <div class="card-footer">
+                        @if (item.IsCompleted)
+                        {
+                            <button class="btn btn-secondary w-100" disabled>Completed</button>
+                        }
+                        else
+                        {
+                            <a asp-action="TakeTest" asp-route-id="@item.Test.Id" class="btn btn-primary w-100">Take Test</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

@@ -1,0 +1,113 @@
+@model TakeTestViewModel
+
+@{
+    ViewData["Title"] = "Take Test";
+}
+
+<div class="mb-4">
+    <h2>@Model.TestTitle</h2>
+    @if (!string.IsNullOrEmpty(Model.TestDescription))
+    {
+        <p class="text-muted">@Model.TestDescription</p>
+    }
+</div>
+
+<div class="card mb-4 bg-light">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <strong>Time Remaining:</strong>
+                <span id="timer" class="badge bg-primary fs-5">@Model.DurationInMinutes:00</span>
+            </div>
+            <span class="text-muted">Questions: @Model.Questions.Count</span>
+        </div>
+    </div>
+</div>
+
+<form method="post" asp-action="SubmitTest" id="testForm">
+    <input type="hidden" asp-for="TestId" />
+    <input type="hidden" asp-for="TestTitle" />
+    <input type="hidden" asp-for="TestDescription" />
+    <input type="hidden" asp-for="DurationInMinutes" />
+
+    @for (int i = 0; i < Model.Questions.Count; i++)
+    {
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Question @(i + 1) (@Model.Questions[i].Points points)</h5>
+            </div>
+            <div class="card-body">
+                <input type="hidden" asp-for="Questions[i].QuestionId" />
+                <input type="hidden" asp-for="Questions[i].QuestionText" />
+                <input type="hidden" asp-for="Questions[i].Points" />
+                
+                <p class="mb-3">@Model.Questions[i].QuestionText</p>
+                
+                <div class="list-group">
+                    @for (int j = 0; j < Model.Questions[i].Options.Count; j++)
+                    {
+                        <div class="list-group-item">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" 
+                                       asp-for="Questions[i].Options[j].IsSelected" 
+                                       value="true"
+                                       name="Questions[@i].SelectedOption"
+                                       id="q@(i)_opt@(j)" />
+                                <label class="form-check-label" for="q@(i)_opt@(j)">
+                                    @Model.Questions[i].Options[j].OptionText
+                                </label>
+                                <input type="hidden" asp-for="Questions[i].Options[j].OptionId" />
+                                <input type="hidden" asp-for="Questions[i].Options[j].OptionText" />
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary btn-lg">Submit Test</button>
+        <a asp-action="Dashboard" class="btn btn-secondary btn-lg">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        let timeLeft = @Model.DurationInMinutes * 60;
+        const timerElement = document.getElementById('timer');
+        const form = document.getElementById('testForm');
+        
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                timerElement.textContent = '0:00';
+                form.submit();
+            }
+            
+            timeLeft--;
+        }
+        
+        const timerInterval = setInterval(updateTimer, 1000);
+        updateTimer();
+        
+        // Ensure only one option is selected per question
+        document.querySelectorAll('[name^="Questions"][name$="SelectedOption"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const questionName = this.name.replace('SelectedOption', 'Options[');
+                document.querySelectorAll(`[name^="${questionName}"][type="hidden"]`).forEach(hidden => {
+                    hidden.value = 'false';
+                });
+                const index = this.id.match(/opt(\d+)/)[1];
+                const hiddenInput = document.querySelector(`[name="${questionName}${index}].IsSelected"][type="hidden"]`);
+                if (hiddenInput) {
+                    hiddenInput.value = 'true';
+                }
+            });
+        });
+    </script>
+}
