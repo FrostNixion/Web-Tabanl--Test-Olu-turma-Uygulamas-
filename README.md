@@ -1,0 +1,44 @@
+bu projeyi devin ile yaptım işte promtu
+
+You are a Senior .NET Developer. Your task is to build a "Web-Based Test Creation and Examination System" using a single-project ASP.NET Core MVC architecture. The goal is to write clean, maintainable, and production-ready code without unnecessary multi-project complexity, optimized for a quick demo within a tight deadline.
+
+### 1. Tech Stack & Setup
+- **Framework:** ASP.NET Core MVC (Single Project Monolith).
+- **Folder Structure:** Organize everything within the main project using clean folder separation:
+  - /Data (ApplicationDbContext, SeedData)
+  - /Models (Domain Entities & ViewModels)
+  - /Repositories (Simple Repository interface and implementation for data access)
+  - /Controllers & /Views 
+- **Database:** Entity Framework Core with MS SQL Server. Use Microsoft.EntityFrameworkCore.SqlServer and Microsoft.EntityFrameworkCore.Tools.
+- **Connection String:** Configure a standard MS SQL connection string in appsettings.json pointing to a local SQL Server instance (e.g., using Server=(localdb)\\mssqllocaldb;Database=TestCreationDb;Trusted_Connection=True; or a standard localhost setup).
+- **Authentication:** ASP.NET Core Identity with Role-Based Access Control ("Teacher" and "Student" roles).
+
+### 2. Database Schema
+Create these entities with standard EF Core relationships and foreign keys:
+- **ApplicationUser:** Inherits IdentityUser (Add Name, Surname, Role properties).
+- **Test:** Id, Title, Description, DurationInMinutes, CreatedByTeacherId, CreatedAt.
+- **Question:** Id, TestId, QuestionText, Points.
+- **Option:** Id, QuestionId, OptionText, IsCorrect (bool).
+- **TestResult:** Id, StudentId, TestId, Score, TakenAt.
+
+### 3. Core Features (Keep it Lean & Functional)
+- **Auth Flow:** Login and Register pages. After login, redirect to /Teacher/Dashboard or /Student/Dashboard based on their role.
+- **Teacher UI:**
+  - View created tests.
+  - Create a new test and dynamically add multiple-choice questions (each question must have 4 options, 1 correct).
+  - View a student results table (Who took which test and what did they score).
+- **Student UI:**
+  - View available tests (Display "Take Test" or "Completed - Score: X").
+  - Test Runner: A simple page showing questions. Include a basic JavaScript countdown timer based on DurationInMinutes that auto-submits the form when it hits 0.
+  - Instant Grading: Calculate the score on submit, save to TestResult, and show a success/result screen.
+
+### 4. Presentation & Polish
+- **UI:** Use Bootstrap 5 or Tailwind CSS via CDN for a modern, clean, and professional look. Use a unified Layout (_Layout.cshtml) with a responsive navbar showing the user's name and logout button.
+- **Validation:** Use standard Data Annotations in Models for basic form validation (e.g., [Required]).
+- **Data Seeding:** Critically important. Seed the database with:
+  - Default roles ("Teacher", "Student").
+  - One sample Teacher account (e.g., teacher@test.com / Password123!).
+  - One sample Student account (e.g., student@test.com / Password123!).
+  - One dummy test with 3 sample questions already attached so the app is ready to demo immediately.
+
+Focus on creating a bug-free, fully compilable single project. Generate all controllers, views, db contexts, and repository configurations required.
