@@ -4,13 +4,16 @@ namespace TestCreationSystem.Models.ViewModels;
 
 public class LoginViewModel
 {
-    [Required]
-    [EmailAddress]
+    [Required(ErrorMessage = "E-posta alanı zorunludur")]
+    [EmailAddress(ErrorMessage = "Geçerli bir e-posta adresi girin")]
+    [Display(Name = "E-posta")]
     public string Email { get; set; } = string.Empty;
 
-    [Required]
+    [Required(ErrorMessage = "Şifre alanı zorunludur")]
     [DataType(DataType.Password)]
+    [Display(Name = "Şifre")]
     public string Password { get; set; } = string.Empty;
 
+    [Display(Name = "Beni Hatırla")]
     public bool RememberMe { get; set; }
 }

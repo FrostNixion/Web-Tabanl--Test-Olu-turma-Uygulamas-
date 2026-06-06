@@ -1,51 +1,91 @@
 @model List<AvailableTestViewModel>
 
 @{
-    ViewData["Title"] = "Student Dashboard";
+    ViewData["Title"] = "Öğrenci Paneli";
 }
 
-<h2 class="mb-4">Available Tests</h2>
+<div class="mb-8">
+    <h1 class="text-3xl font-bold text-slate-900">Mevcut Sınavlar</h1>
+    <p class="text-slate-600 mt-1">Sınavları görüntüleyin ve katılın</p>
+</div>
 
 @if (Model.Count == 0)
 {
-    <div class="alert alert-info">
-        <h4>No tests available</h4>
-        <p>There are no tests available to take at this time.</p>
+    <div class="bg-white rounded-xl shadow-sm p-12 text-center">
+        <svg class="mx-auto h-16 w-16 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <h3 class="mt-4 text-lg font-medium text-slate-900">Mevcut sınav yok</h3>
+        <p class="mt-2 text-slate-600">Şu anda katılabileceğiniz sınav bulunmuyor.</p>
     </div>
 }
 else
 {
-    <div class="row">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @foreach (var item in Model)
         {
-            <div class="col-md-6 mb-4">
-                <div class="card shadow">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">@item.Test.Title</h5>
-                    </div>
-                    <div class="card-body">
-                        <p class="mb-2"><strong>Description:</strong> @item.Test.Description</p>
-                        <p class="mb-2"><strong>Duration:</strong> @item.Test.DurationInMinutes minutes</p>
-                        <p class="mb-2"><strong>Questions:</strong> @item.Test.Questions.Count</p>
+            <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
+                <div class="p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold text-slate-900 mb-2">@item.Test.Title</h3>
+                            @if (!string.IsNullOrEmpty(item.Test.Description))
+                            {
+                                <p class="text-sm text-slate-600">@item.Test.Description</p>
+                            }
+                        </div>
                         @if (item.IsCompleted)
                         {
-                            <p class="mb-0"><strong>Status:</strong> <span class="badge bg-success">Completed - Score: @item.Score</span></p>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                Tamamlandı
+                            </span>
                         }
                         else
                         {
-                            <p class="mb-0"><strong>Status:</strong> <span class="badge bg-warning">Not Taken</span></p>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                Tamamlanmadı
+                            </span>
                         }
                     </div>
-                    <div class="card-footer">
-                        @if (item.IsCompleted)
+                    
+                    <div class="space-y-2 text-sm text-slate-600 mb-4">
+                        <div class="flex items-center">
+                            <svg class="h-4 w-4 mr-2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            @item.Test.DurationInMinutes dakika
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="h-4 w-4 mr-2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            @item.Test.Questions.Count soru
+                        </div>
+                        @if (item.IsCompleted && item.Score.HasValue)
                         {
-                            <button class="btn btn-secondary w-100" disabled>Completed</button>
-                        }
-                        else
-                        {
-                            <a asp-action="TakeTest" asp-route-id="@item.Test.Id" class="btn btn-primary w-100">Take Test</a>
+                            <div class="flex items-center">
+                                <svg class="h-4 w-4 mr-2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Puan: @item.Score
+                            </div>
                         }
                     </div>
+                </div>
+                
+                <div class="px-6 py-4 bg-slate-50 border-t border-slate-200 rounded-b-xl">
+                    @if (item.IsCompleted)
+                    {
+                        <button class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm font-medium text-slate-400 bg-white cursor-not-allowed" disabled>
+                            Tamamlandı
+                        </button>
+                    }
+                    else
+                    {
+                        <a asp-action="TakeTest" asp-route-id="@item.Test.Id" class="block w-full px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-primary hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors text-center">
+                            Sınava Başla
+                        </a>
+                    }
                 </div>
             </div>
         }

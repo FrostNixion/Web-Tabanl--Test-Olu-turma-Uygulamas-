@@ -1,33 +1,42 @@
 @model TestResultViewModel
 
 @{
-    ViewData["Title"] = "Test Result";
+    ViewData["Title"] = "Sınav Sonucu";
 }
 
-<div class="mb-4">
-    <h2>Testi Result: @Model.TestTitle</h2>
-    <p class="text-muted">Completed on: @Model.TakenAt.ToString("MM/dd/yyyy HH:mm")</p>
+<div class="mb-8">
+    <h1 class="text-3xl font-bold text-slate-900">Sınav Sonucu: @Model.TestTitle</h1>
+    <p class="text-slate-600 mt-1">Tamamlanma Tarihi: @Model.TakenAt.ToString("dd/MM/yyyy HH:mm")</p>
 </div>
 
-<div class="card mb-4 shadow">
-    <div class="card-body text-center">
-        <h3>Your Score: @Model.Score / @Model.TotalPoints</h3>
-        <div class="progress mt-3">
+<div class="bg-white rounded-xl shadow-sm p-8 mb-6">
+    <div class="text-center">
+        <h2 class="text-4xl font-bold text-slate-900 mb-2">Puanınız: @Model.Score / @Model.TotalPoints</h2>
+        <div class="w-full bg-slate-200 rounded-full h-4 mt-6">
             @{
                 var percentage = Model.TotalPoints > 0 ? (Model.Score * 100.0 / Model.TotalPoints) : 0;
+                var progressBarClass = percentage >= 70 ? "bg-green-500" : percentage >= 50 ? "bg-yellow-500" : "bg-red-500";
+                var textColorClass = percentage >= 70 ? "text-green-600" : percentage >= 50 ? "text-yellow-600" : "text-red-600";
             }
-            <div class="progress-bar @(percentage >= 70 ? "bg-success" : percentage >= 50 ? "bg-warning" : "bg-danger")" 
-                 role="progressbar" 
+            <div class="@progressBarClass h-4 rounded-full transition-all duration-500" 
                  style="width: @percentage%;" 
+                 role="progressbar" 
                  aria-valuenow="@percentage" 
                  aria-valuemin="0" 
                  aria-valuemax="100">
-                @percentage.ToString("0.0")%
             </div>
         </div>
+        <p class="text-2xl font-semibold mt-4 @textColorClass">
+            @percentage.ToString("0.0")%
+        </p>
     </div>
 </div>
 
-<div class="mb-3">
-    <a asp-action="Dashboard" class="btn btn-primary">Back to Dashboard</a>
+<div class="mb-6">
+    <a asp-action="Dashboard" class="inline-flex items-center px-6 py-3 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-primary hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors">
+        <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 001 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+        Panele Dön
+    </a>
 </div>

@@ -1,69 +1,112 @@
 @model RegisterViewModel
 
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Kayıt Ol";
+    Layout = null;
 }
 
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">Register</h4>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Sınav Oluşturma Sistemi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e3a8a',
+                        secondary: '#3b82f6',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div>
+            <div class="flex justify-center">
+                <svg class="h-16 w-16 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
             </div>
-            <div class="card-body">
-                <form method="post">
-                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
-                    
-                    <div class="mb-3">
-                        <label asp-for="Email" class="form-label"></label>
-                        <input asp-for="Email" class="form-control" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-slate-900">Sınav Sistemi</h2>
+            <p class="mt-2 text-center text-sm text-slate-600">Yeni hesap oluşturun</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-8">
+            <form class="space-y-5" method="post">
+                <div asp-validation-summary="All" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"></div>
+                
+                <div>
+                    <label asp-for="Email" class="block text-sm font-medium text-slate-700 mb-2">E-posta</label>
+                    <input asp-for="Email" class="appearance-none relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" placeholder="ornek@test.com" />
+                    <span asp-validation-for="Email" class="text-red-500 text-sm mt-1"></span>
+                </div>
+                
+                <div>
+                    <label asp-for="Password" class="block text-sm font-medium text-slate-700 mb-2">Şifre</label>
+                    <input asp-for="Password" type="password" class="appearance-none relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" placeholder="••••••••" />
+                    <span asp-validation-for="Password" class="text-red-500 text-sm mt-1"></span>
+                </div>
+                
+                <div>
+                    <label asp-for="ConfirmPassword" class="block text-sm font-medium text-slate-700 mb-2">Şifre Tekrar</label>
+                    <input asp-for="ConfirmPassword" type="password" class="appearance-none relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" placeholder="••••••••" />
+                    <span asp-validation-for="ConfirmPassword" class="text-red-500 text-sm mt-1"></span>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label asp-for="Name" class="block text-sm font-medium text-slate-700 mb-2">Ad</label>
+                        <input asp-for="Name" class="appearance-none relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" placeholder="Ad" />
+                        <span asp-validation-for="Name" class="text-red-500 text-sm mt-1"></span>
                     </div>
                     
-                    <div class="mb-3">
-                        <label asp-for="Password" class="form-label"></label>
-                        <input asp-for="Password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
+                    <div>
+                        <label asp-for="Surname" class="block text-sm font-medium text-slate-700 mb-2">Soyad</label>
+                        <input asp-for="Surname" class="appearance-none relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" placeholder="Soyad" />
+                        <span asp-validation-for="Surname" class="text-red-500 text-sm mt-1"></span>
                     </div>
-                    
-                    <div class="mb-3">
-                        <label asp-for="ConfirmPassword" class="form-label"></label>
-                        <input asp-for="ConfirmPassword" class="form-control" />
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+                
+                <div>
+                    <label asp-for="Role" class="block text-sm font-medium text-slate-700 mb-2">Rol</label>
+                    <select asp-for="Role" class="appearance-none relative block w-full px-3 py-3 border border-slate-300 text-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors">
+                        <option value="">Rol Seçin</option>
+                        <option value="Teacher">Öğretmen</option>
+                        <option value="Student">Öğrenci</option>
+                    </select>
+                    <span asp-validation-for="Role" class="text-red-500 text-sm mt-1"></span>
+                </div>
+                
+                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors">
+                    Kayıt Ol
+                </button>
+            </form>
+
+            <div class="mt-6">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-slate-200"></div>
                     </div>
-                    
-                    <div class="mb-3">
-                        <label asp-for="Name" class="form-label"></label>
-                        <input asp-for="Name" class="form-control" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-white text-slate-500">veya</span>
                     </div>
-                    
-                    <div class="mb-3">
-                        <label asp-for="Surname" class="form-label"></label>
-                        <input asp-for="Surname" class="form-control" />
-                        <span asp-validation-for="Surname" class="text-danger"></span>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label asp-for="Role" class="form-label"></label>
-                        <select asp-for="Role" class="form-select">
-                            <option value="">Select Role</option>
-                            <option value="Teacher">Teacher</option>
-                            <option value="Student">Student</option>
-                        </select>
-                        <span asp-validation-for="Role" class="text-danger"></span>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary w-100">Register</button>
-                </form>
-            </div>
-            <div class="card-footer text-center">
-                <p class="mb-0">Already have an account? <a asp-action="Login">Login</a></p>
+                </div>
+
+                <div class="mt-6 text-center">
+                    <p class="text-sm text-slate-600">Zaten hesabınız var mı? <a asp-action="Login" class="font-medium text-primary hover:text-blue-900">Giriş Yap</a></p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

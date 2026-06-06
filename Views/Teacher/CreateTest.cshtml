@@ -1,40 +1,37 @@
 @model CreateTestViewModel
 
 @{
-    ViewData["Title"] = "Create Test";
+    ViewData["Title"] = "Sınav Oluştur";
 }
 
-<div class="row">
-    <div class="col-12">
-        <h2>Create New Test</h2>
-        <hr />
-    </div>
+<div class="mb-8">
+    <h1 class="text-3xl font-bold text-slate-900">Yeni Sınav Oluştur</h1>
+    <p class="text-slate-600 mt-1">Çoktan seçmeli sorularla yeni bir sınav oluşturun</p>
 </div>
 
 <form method="post" id="testForm">
-    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+    <div asp-validation-summary="All" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm mb-6"></div>
     
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="mb-0">Test Details</h5>
-        </div>
-        <div class="card-body">
-            <div class="mb-3">
-                <label asp-for="Title" class="form-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+        <h2 class="text-lg font-semibold text-slate-900 mb-4">Sınav Bilgileri</h2>
+        
+        <div class="space-y-4">
+            <div>
+                <label asp-for="Title" class="block text-sm font-medium text-slate-700 mb-2">Sınav Başlığı</label>
+                <input asp-for="Title" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" placeholder="Örn: Matematik Sınavı" />
+                <span asp-validation-for="Title" class="text-red-500 text-sm mt-1"></span>
             </div>
             
-            <div class="mb-3">
-                <label asp-for="Description" class="form-label"></label>
-                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
+            <div>
+                <label asp-for="Description" class="block text-sm font-medium text-slate-700 mb-2">Açıklama</label>
+                <textarea asp-for="Description" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" rows="3" placeholder="Sınav hakkında kısa bilgi"></textarea>
+                <span asp-validation-for="Description" class="text-red-500 text-sm mt-1"></span>
             </div>
             
-            <div class="mb-3">
-                <label asp-for="DurationInMinutes" class="form-label"></label>
-                <input asp-for="DurationInMinutes" class="form-control" type="number" min="1" max="180" />
-                <span asp-validation-for="DurationInMinutes" class="text-danger"></span>
+            <div>
+                <label asp-for="DurationInMinutes" class="block text-sm font-medium text-slate-700 mb-2">Süre (Dakika)</label>
+                <input asp-for="DurationInMinutes" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" type="number" min="1" max="180" placeholder="Örn: 30" />
+                <span asp-validation-for="DurationInMinutes" class="text-red-500 text-sm mt-1"></span>
             </div>
         </div>
     </div>
@@ -42,104 +39,117 @@
     <div id="questionsContainer">
         @for (int i = 0; i < Model.Questions.Count; i++)
         {
-            <div class="card mb-4 question-card" data-question-index="@i">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Question @(i + 1)</h5>
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-6 question-card" data-question-index="@i">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-slate-900">Soru @(i + 1)</h3>
                     @if (i > 0)
                     {
-                        <button type="button" class="btn btn-sm btn-danger remove-question">Remove</button>
+                        <button type="button" class="text-red-600 hover:text-red-700 text-sm font-medium remove-question">Sil</button>
                     }
                 </div>
-                <div class="card-body">
-                    <input type="hidden" asp-for="Questions[i].Id" />
-                    
-                    <div class="mb-3">
-                        <label asp-for="Questions[i].QuestionText" class="form-label"></label>
-                        <textarea asp-for="Questions[i].QuestionText" class="form-control" rows="2"></textarea>
-                        <span asp-validation-for="Questions[i].QuestionText" class="text-danger"></span>
+                
+                <input type="hidden" asp-for="Questions[i].Id" />
+                
+                <div class="space-y-4">
+                    <div>
+                        <label asp-for="Questions[i].QuestionText" class="block text-sm font-medium text-slate-700 mb-2">Soru Metni</label>
+                        <textarea asp-for="Questions[i].QuestionText" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" rows="2" placeholder="Sorunuzu buraya yazın"></textarea>
+                        <span asp-validation-for="Questions[i].QuestionText" class="text-red-500 text-sm mt-1"></span>
                     </div>
                     
-                    <div class="mb-3">
-                        <label asp-for="Questions[i].Points" class="form-label"></label>
-                        <input asp-for="Questions[i].Points" class="form-control" type="number" min="1" max="100" />
-                        <span asp-validation-for="Questions[i].Points" class="text-danger"></span>
+                    <div>
+                        <label asp-for="Questions[i].Points" class="block text-sm font-medium text-slate-700 mb-2">Puan</label>
+                        <input asp-for="Questions[i].Points" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" type="number" min="1" max="100" value="1" />
+                        <span asp-validation-for="Questions[i].Points" class="text-red-500 text-sm mt-1"></span>
                     </div>
                     
-                    <h6>Options (select the correct answer)</h6>
-                    <div class="options-container">
-                        @for (int j = 0; j < Model.Questions[i].Options.Count; j++)
-                        {
-                            <div class="row mb-2 option-row">
-                                <div class="col-1">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" 
+                    <div>
+                        <h4 class="text-sm font-medium text-slate-700 mb-3">Seçenekler (doğru cevabı işaretleyin)</h4>
+                        <div class="options-container space-y-3">
+                            @for (int j = 0; j < Model.Questions[i].Options.Count; j++)
+                            {
+                                <div class="flex items-center space-x-3">
+                                    <div class="flex-shrink-0">
+                                        <input class="h-4 w-4 text-primary focus:ring-primary border-slate-300" type="radio" 
                                                name="Questions[@i].CorrectOption" value="@j" 
                                                @(Model.Questions[i].Options[j].IsCorrect ? "checked" : "") />
                                     </div>
+                                    <div class="flex-1">
+                                        <input asp-for="Questions[i].Options[j].OptionText" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" placeholder="Seçenek @(j + 1)" />
+                                        <input type="hidden" asp-for="Questions[i].Options[j].Id" />
+                                        <input type="hidden" asp-for="Questions[i].Options[j].IsCorrect" />
+                                    </div>
                                 </div>
-                                <div class="col-10">
-                                    <input asp-for="Questions[i].Options[j].OptionText" class="form-control" placeholder="Option text" />
-                                    <input type="hidden" asp-for="Questions[i].Options[j].Id" />
-                                    <input type="hidden" asp-for="Questions[i].Options[j].IsCorrect" />
-                                </div>
-                            </div>
-                        }
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
         }
     </div>
 
-    <button type="button" id="addQuestionBtn" class="btn btn-secondary mb-3">Add Question</button>
+    <button type="button" id="addQuestionBtn" class="w-full mb-6 px-4 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-primary hover:text-primary transition-colors">
+        <svg class="h-5 w-5 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        Soru Ekle
+    </button>
     
-    <div class="mb-3">
-        <button type="submit" class="btn btn-primary">Create Test</button>
-        <a asp-action="Dashboard" class="btn btn-secondary">Cancel</a>
+    <div class="flex space-x-4">
+        <button type="submit" class="flex-1 px-4 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors">
+            Sınav Oluştur
+        </button>
+        <a asp-action="Dashboard" class="flex-1 px-4 py-3 border border-slate-300 rounded-lg shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors text-center">
+            İptal
+        </a>
     </div>
 </form>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
     <script>
         let questionIndex = @Model.Questions.Count;
         
         document.getElementById('addQuestionBtn').addEventListener('click', function() {
             const container = document.getElementById('questionsContainer');
             const questionHtml = `
-                <div class="card mb-4 question-card" data-question-index="${questionIndex}">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Question ${questionIndex + 1}</h5>
-                        <button type="button" class="btn btn-sm btn-danger remove-question">Remove</button>
+                <div class="bg-white rounded-xl shadow-sm p-6 mb-6 question-card" data-question-index="${questionIndex}">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold text-slate-900">Soru ${questionIndex + 1}</h3>
+                        <button type="button" class="text-red-600 hover:text-red-700 text-sm font-medium remove-question">Sil</button>
                     </div>
-                    <div class="card-body">
-                        <input type="hidden" name="Questions[${questionIndex}].Id" value="0" />
-                        
-                        <div class="mb-3">
-                            <label class="form-label">Question Text</label>
-                            <textarea name="Questions[${questionIndex}].QuestionText" class="form-control" rows="2"></textarea>
+                    
+                    <input type="hidden" name="Questions[${questionIndex}].Id" value="0" />
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Soru Metni</label>
+                            <textarea name="Questions[${questionIndex}].QuestionText" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" rows="2" placeholder="Sorunuzu buraya yazın"></textarea>
                         </div>
                         
-                        <div class="mb-3">
-                            <label class="form-label">Points</label>
-                            <input name="Questions[${questionIndex}].Points" class="form-control" type="number" min="1" max="100" value="1" />
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Puan</label>
+                            <input name="Questions[${questionIndex}].Points" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" type="number" min="1" max="100" value="1" />
                         </div>
                         
-                        <h6>Options (select the correct answer)</h6>
-                        <div class="options-container">
-                            ${[0, 1, 2, 3].map(j => `
-                                <div class="row mb-2 option-row">
-                                    <div class="col-1">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="Questions[${questionIndex}].CorrectOption" value="${j}" />
+                        <div>
+                            <h4 class="text-sm font-medium text-slate-700 mb-3">Seçenekler (doğru cevabı işaretleyin)</h4>
+                            <div class="options-container space-y-3">
+                                ${[0, 1, 2, 3].map(j => `
+                                    <div class="flex items-center space-x-3">
+                                        <div class="flex-shrink-0">
+                                            <input class="h-4 w-4 text-primary focus:ring-primary border-slate-300" type="radio" name="Questions[${questionIndex}].CorrectOption" value="${j}" />
+                                        </div>
+                                        <div class="flex-1">
+                                            <input name="Questions[${questionIndex}].Options[${j}].OptionText" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" placeholder="Seçenek ${j + 1}" />
+                                            <input type="hidden" name="Questions[${questionIndex}].Options[${j}].Id" value="0" />
+                                            <input type="hidden" name="Questions[${questionIndex}].Options[${j}].IsCorrect" value="false" />
                                         </div>
                                     </div>
-                                    <div class="col-10">
-                                        <input name="Questions[${questionIndex}].Options[${j}].OptionText" class="form-control" placeholder="Option text" />
-                                        <input type="hidden" name="Questions[${questionIndex}].Options[${j}].Id" value="0" />
-                                        <input type="hidden" name="Questions[${questionIndex}].Options[${j}].IsCorrect" value="false" />
-                                    </div>
-                                </div>
-                            `).join('')}
+                                `).join('')}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -160,9 +170,8 @@
             const cards = document.querySelectorAll('.question-card');
             cards.forEach((card, index) => {
                 card.setAttribute('data-question-index', index);
-                card.querySelector('.card-header h5').textContent = `Question ${index + 1}`;
+                card.querySelector('.flex.justify-between h3').textContent = `Soru ${index + 1}`;
                 
-                // Update all input names
                 card.querySelectorAll('[name]').forEach(input => {
                     const name = input.name;
                     const newName = name.replace(/Questions\[\d+\]/, `Questions[${index}]`);
@@ -171,7 +180,6 @@
             });
         }
         
-        // Handle radio button clicks to update IsCorrect hidden fields
         document.addEventListener('change', function(e) {
             if (e.target.type === 'radio' && e.target.name.includes('CorrectOption')) {
                 const questionIndex = e.target.name.match(/Questions\[(\d+)\]/)[1];
