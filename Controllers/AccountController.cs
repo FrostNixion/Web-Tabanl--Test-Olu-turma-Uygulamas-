@@ -11,13 +11,16 @@ public class AccountController : Controller
 {
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
     public AccountController(
         SignInManager<ApplicationUser> signInManager,
-        UserManager<ApplicationUser> userManager)
+        UserManager<ApplicationUser> userManager,
+        RoleManager<IdentityRole> roleManager)
     {
         _signInManager = signInManager;
         _userManager = userManager;
+        _roleManager = roleManager;
     }
 
     [HttpGet]
@@ -25,6 +28,10 @@ public class AccountController : Controller
     {
         if (User.Identity?.IsAuthenticated == true)
         {
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Dashboard", "Admin");
+            }
             return RedirectToAction("Dashboard", User.IsInRole("Teacher") ? "Teacher" : "Student");
         }
         return View();
@@ -47,7 +54,11 @@ public class AccountController : Controller
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user != null)
             {
-                if (await _userManager.IsInRoleAsync(user, "Teacher"))
+                if (await _userManager.IsInRoleAsync(user, "Admin"))
+                {
+                    return RedirectToAction("Dashboard", "Admin");
+                }
+                else if (await _userManager.IsInRoleAsync(user, "Teacher"))
                 {
                     return RedirectToAction("Dashboard", "Teacher");
                 }
@@ -60,56 +71,6 @@ public class AccountController : Controller
         }
 
         ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-        return View(model);
-    }
-
-    [HttpGet]
-    public IActionResult Register()
-    {
-        return View();
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Register(RegisterViewModel model)
-    {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
-        var user = new ApplicationUser
-        {
-            UserName = model.Email,
-            Email = model.Email,
-            Name = model.Name,
-            Surname = model.Surname,
-            Role = model.Role,
-            EmailConfirmed = true
-        };
-
-        var result = await _userManager.CreateAsync(user, model.Password);
-
-        if (result.Succeeded)
-        {
-            await _userManager.AddToRoleAsync(user, model.Role);
-            await _signInManager.SignInAsync(user, isPersistent: false);
-
-            if (model.Role == "Teacher")
-            {
-                return RedirectToAction("Dashboard", "Teacher");
-            }
-            else
-            {
-                return RedirectToAction("Dashboard", "Student");
-            }
-        }
-
-        foreach (var error in result.Errors)
-        {
-            ModelState.AddModelError(string.Empty, error.Description);
-        }
-
         return View(model);
     }
 
@@ -154,6 +115,10 @@ public class AccountController : Controller
         {
             await _signInManager.SignInAsync(user, isPersistent: false);
             TempData["SuccessMessage"] = "Şifreniz başarıyla değiştirildi.";
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Dashboard", "Admin");
+            }
             return RedirectToAction("Dashboard", User.IsInRole("Teacher") ? "Teacher" : "Student");
         }
 

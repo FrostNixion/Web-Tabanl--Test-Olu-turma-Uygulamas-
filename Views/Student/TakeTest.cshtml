@@ -97,9 +97,8 @@
                                     @optionLabels[j]
                                 </div>
                                 <input class="h-5 w-5 text-primary focus:ring-primary border-[var(--border)] mr-3" type="radio"
-                                       asp-for="Questions[i].Options[j].IsSelected"
-                                       value="true"
                                        name="Questions[@i].SelectedOption"
+                                       value="@j"
                                        id="q@(i)_opt@(j)"
                                        onchange="updateAnsweredCount()" />
                                 <span class="text-ink flex-1">@Model.Questions[i].Options[j].OptionText</span>
@@ -198,20 +197,6 @@
         const timerInterval = setInterval(updateTimer, 1000);
         updateTimer();
         updateAnsweredCount();
-
-        document.querySelectorAll('[name^="Questions"][name$="SelectedOption"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                const questionName = this.name.replace('SelectedOption', 'Options[');
-                document.querySelectorAll(`[name^="${questionName}"][type="hidden"]`).forEach(hidden => {
-                    hidden.value = 'false';
-                });
-                const index = this.id.match(/opt(\d+)/)[1];
-                const hiddenInput = document.querySelector(`[name="${questionName}${index}"].IsSelected"][type="hidden"]`);
-                if (hiddenInput) {
-                    hiddenInput.value = 'true';
-                }
-            });
-        });
 
         window.addEventListener('beforeunload', function (e) {
             e.preventDefault();

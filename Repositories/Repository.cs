@@ -27,6 +27,41 @@ public class Repository : IRepository
         return await _userManager.FindByEmailAsync(email);
     }
 
+    public async Task<List<ApplicationUser>> GetAllUsersAsync()
+    {
+        return await _context.Users
+            .OrderBy(u => u.Name)
+            .ThenBy(u => u.Surname)
+            .ToListAsync();
+    }
+
+    public async Task<List<ApplicationUser>> GetUsersByRoleAsync(string role)
+    {
+        var usersInRole = await _userManager.GetUsersInRoleAsync(role);
+        return usersInRole
+            .OrderBy(u => u.Name)
+            .ThenBy(u => u.Surname)
+            .ToList();
+    }
+
+    public async Task AddUserAsync(ApplicationUser user, string password)
+    {
+        var result = await _userManager.CreateAsync(user, password);
+        if (!result.Succeeded)
+        {
+            throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
+        }
+    }
+
+    public async Task DeleteUserAsync(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user != null)
+        {
+            await _userManager.DeleteAsync(user);
+        }
+    }
+
     // Test operations
     public async Task<Test?> GetTestByIdAsync(int id)
     {
@@ -34,6 +69,7 @@ public class Repository : IRepository
             .Include(t => t.Questions)
             .ThenInclude(q => q.Options)
             .Include(t => t.CreatedByTeacher)
+            .Include(t => t.TestResults)
             .FirstOrDefaultAsync(t => t.Id == id);
     }
 
@@ -50,6 +86,8 @@ public class Repository : IRepository
     {
         return await _context.Tests
             .Include(t => t.Questions)
+            .Include(t => t.TestResults)
+            .ThenInclude(tr => tr.Student)
             .Where(t => t.CreatedByTeacherId == teacherId)
             .OrderByDescending(t => t.CreatedAt)
             .ToListAsync();
@@ -173,6 +211,9 @@ public class Repository : IRepository
     {
         return await _context.TestResults
             .Include(tr => tr.Test)
+            .ThenInclude(t => t.Questions)
+            .ThenInclude(q => q.Options)
+            .Include(tr => tr.Student)
             .Where(tr => tr.StudentId == studentId)
             .OrderByDescending(tr => tr.TakenAt)
             .ToListAsync();
@@ -182,6 +223,14 @@ public class Repository : IRepository
     {
         return await _context.TestResults
             .FirstOrDefaultAsync(tr => tr.StudentId == studentId && tr.TestId == testId);
+    }
+
+    public async Task<List<TestResult>> GetAllTestResultsAsync()
+    {
+        return await _context.TestResults
+            .Include(tr => tr.Test)
+            .Include(tr => tr.Student)
+            .ToListAsync();
     }
 
     public async Task AddTestResultAsync(TestResult testResult)
@@ -194,6 +243,16 @@ public class Repository : IRepository
     {
         _context.TestResults.Update(testResult);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteTestResultAsync(int id)
+    {
+        var testResult = await _context.TestResults.FindAsync(id);
+        if (testResult != null)
+        {
+            _context.TestResults.Remove(testResult);
+            await _context.SaveChangesAsync();
+        }
     }
 
     // Save changes

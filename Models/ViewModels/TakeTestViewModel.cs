@@ -17,6 +17,7 @@ public class TestQuestionViewModel
     public string QuestionText { get; set; } = string.Empty;
     public int Points { get; set; }
     public List<TestOptionViewModel> Options { get; set; } = new List<TestOptionViewModel>();
+    public int SelectedOption { get; set; }
 }
 
 public class TestOptionViewModel

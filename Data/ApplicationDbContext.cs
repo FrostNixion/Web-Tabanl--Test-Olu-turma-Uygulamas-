@@ -58,7 +58,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasOne(tr => tr.Test)
                   .WithMany(t => t.TestResults)
                   .HasForeignKey(tr => tr.TestId)
-                  .OnDelete(DeleteBehavior.Restrict);
+                  .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

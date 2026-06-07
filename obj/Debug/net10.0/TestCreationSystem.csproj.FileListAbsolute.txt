@@ -337,3 +337,8 @@ C:\Web-Tabanl--Test-Olu-turma-Uygulamas-\obj\Debug\net10.0\compressed\63dyaqybxr
 C:\Web-Tabanl--Test-Olu-turma-Uygulamas-\obj\Debug\net10.0\compressed\c8wbfkvdwj-{0}-51v5x3zhnh-51v5x3zhnh.gz
 C:\Web-Tabanl--Test-Olu-turma-Uygulamas-\obj\Debug\net10.0\compressed\mfc96ab0eq-{0}-jgfeyaatvj-jgfeyaatvj.gz
 C:\Web-Tabanl--Test-Olu-turma-Uygulamas-\obj\Debug\net10.0\compressed\qllnd540zy-{0}-6124jx2v40-6124jx2v40.gz
+C:\Users\erenk\source\repos\winds\bin\Debug\net10.0\TestCreationSystem.staticwebassets.runtime.json
+C:\Users\erenk\source\repos\winds\obj\Debug\net10.0\compressed\mfc96ab0eq-{0}-jkpwm7eq5m-jkpwm7eq5m.gz
+C:\Users\erenk\source\repos\winds\obj\Debug\net10.0\compressed\63dyaqybxr-{0}-gcurt7k74j-gcurt7k74j.gz
+C:\Users\erenk\source\repos\winds\obj\Debug\net10.0\compressed\qllnd540zy-{0}-1stpj5ai27-1stpj5ai27.gz
+C:\Users\erenk\source\repos\winds\obj\Debug\net10.0\compressed\c8wbfkvdwj-{0}-477sz6487j-477sz6487j.gz

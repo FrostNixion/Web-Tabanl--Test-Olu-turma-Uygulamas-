@@ -14,9 +14,15 @@ public class TestResultViewModel
 
 public class ResultQuestionViewModel
 {
+    public int QuestionId { get; set; }
     public string QuestionText { get; set; } = string.Empty;
     public int Points { get; set; }
+    public List<ResultOptionViewModel> Options { get; set; } = new List<ResultOptionViewModel>();
+}
+
+public class ResultOptionViewModel
+{
+    public int OptionId { get; set; }
+    public string OptionText { get; set; } = string.Empty;
     public bool IsCorrect { get; set; }
-    public string SelectedAnswer { get; set; } = string.Empty;
-    public string CorrectAnswer { get; set; } = string.Empty;
 }

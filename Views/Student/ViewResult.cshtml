@@ -4,7 +4,7 @@
     ViewData["Title"] = "Sınav Sonucu";
 }
 
-<div class="max-w-2xl mx-auto space-y-6">
+<div class="max-w-3xl mx-auto space-y-6">
     <div class="text-center">
         <h1 class="text-2xl font-bold text-ink mb-1">Sınav Sonucu</h1>
         <p class="text-ink-500">@Model.TestTitle · @Model.TakenAt.ToString("dd MMM yyyy, HH:mm")</p>
@@ -28,6 +28,44 @@
 
         <p class="text-ink-700 font-medium">@message</p>
     </div>
+
+    @if (Model.Questions.Any())
+    {
+        <div class="card p-6">
+            <h2 class="text-xl font-bold text-ink mb-4">Soru Cevapları</h2>
+            <div class="space-y-6">
+                @for (int i = 0; i < Model.Questions.Count; i++)
+                {
+                    var question = Model.Questions[i];
+                    <div class="border-b border-[var(--border)] pb-6 last:border-0 last:pb-0">
+                        <div class="flex items-start gap-3 mb-3">
+                            <div class="h-8 w-8 rounded-full bg-primary-light text-primary flex items-center justify-center font-bold text-sm shrink-0">
+                                @(i + 1)
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-semibold text-ink mb-1">@question.QuestionText</p>
+                                <span class="badge badge-warning text-xs">@question.Points puan</span>
+                            </div>
+                        </div>
+                        <div class="ml-11 space-y-2">
+                            @foreach (var option in question.Options)
+                            {
+                                <div class="flex items-center gap-2 p-3 rounded-lg @(option.IsCorrect ? "bg-[#ecfdf5] border border-[#10b981]" : "bg-[var(--bg)]")">
+                                    @if (option.IsCorrect)
+                                    {
+                                        <svg class="h-5 w-5 text-[#10b981] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    }
+                                    <span class="text-sm @(option.IsCorrect ? "text-[#059669] font-medium" : "text-ink-500")">@option.OptionText</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
 
     <div class="flex gap-3">
         <a asp-action="Dashboard" class="btn btn-ghost flex-1 py-3">Panelime Dön</a>

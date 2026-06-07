@@ -1,26 +1,30 @@
-@model List<TestResult>
+@model List<ApplicationUser>
 
 @{
-    ViewData["Title"] = "Sınav Sonuçları";
+    ViewData["Title"] = "Öğrenciler";
 }
 
 <div class="space-y-6">
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-2xl font-bold text-ink">Sınav Sonuçları</h1>
-            <p class="text-ink-500 mt-1">@ViewBag.TestTitle</p>
+            <h1 class="text-2xl font-bold text-ink">Öğrenciler</h1>
+            <p class="text-ink-500 mt-1">Öğrencilerinizi yönetin</p>
         </div>
-        <a asp-action="Dashboard" class="btn btn-ghost py-2.5">Panele Dön</a>
+        <a asp-action="CreateStudent" class="btn btn-primary py-2.5">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+            Öğrenci Ekle
+        </a>
     </div>
 
     @if (!Model.Any())
     {
         <div class="card p-12 text-center">
             <div class="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-light text-primary mb-4">
-                <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
             </div>
-            <h3 class="text-xl font-bold text-ink mb-2">Henüz sonuç yok</h3>
-            <p class="text-ink-500">Bu sınavı henüz hiçbir öğrenci tamamlamadı.</p>
+            <h3 class="text-xl font-bold text-ink mb-2">Henüz öğrenci yok</h3>
+            <p class="text-ink-500 mb-6">Başlamak için ilk öğrenciyi oluşturun.</p>
+            <a asp-action="CreateStudent" class="btn btn-primary py-2.5">Öğrenci Ekle</a>
         </div>
     }
     else
@@ -31,32 +35,27 @@
                     <thead>
                         <tr class="border-b border-[var(--border)]">
                             <th class="text-left px-5 py-3 text-xs font-semibold text-ink-500 uppercase">Öğrenci</th>
-                            <th class="text-left px-5 py-3 text-xs font-semibold text-ink-500 uppercase">Puan</th>
-                            <th class="text-left px-5 py-3 text-xs font-semibold text-ink-500 uppercase">Tarih</th>
+                            <th class="text-left px-5 py-3 text-xs font-semibold text-ink-500 uppercase">E-posta</th>
                             <th class="text-right px-5 py-3 text-xs font-semibold text-ink-500 uppercase">İşlemler</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var result in Model)
+                        @foreach (var student in Model)
                         {
                             <tr class="border-b border-[var(--border)] hover:bg-[var(--bg)]">
                                 <td class="px-5 py-4">
                                     <div class="flex items-center gap-3">
                                         <div class="h-10 w-10 rounded-full bg-primary-light text-primary flex items-center justify-center font-semibold text-sm">
-                                            @(result.Student?.Name?.FirstOrDefault().ToString().ToUpper() ?? "U")
+                                            @(student.Name?.FirstOrDefault().ToString().ToUpper() ?? "U")
                                         </div>
                                         <div>
-                                            <p class="font-medium text-ink">@result.Student?.Name @result.Student?.Surname</p>
-                                            <p class="text-xs text-ink-500">@result.Student?.Email</p>
+                                            <p class="font-medium text-ink">@student.Name @student.Surname</p>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-5 py-4">
-                                    <span class="badge badge-primary">@result.Score puan</span>
-                                </td>
-                                <td class="px-5 py-4 text-sm text-ink-500">@result.TakenAt.ToString("dd MMM yyyy, HH:mm")</td>
+                                <td class="px-5 py-4 text-sm text-ink-500">@student.Email</td>
                                 <td class="px-5 py-4 text-right">
-                                    <a asp-action="DeleteTestResult" asp-route-id="@result.Id" class="btn btn-danger py-2 px-3 text-sm" onclick="return confirm('Bu öğrencinin sınav kaydını silmek istediğinizden emin misiniz?');">
+                                    <a asp-action="DeleteStudent" asp-route-id="@student.Id" class="btn btn-danger py-2 px-3 text-sm" onclick="return confirm('Bu öğrenciyi silmek istediğinizden emin misiniz?');">
                                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                                     </a>
                                 </td>

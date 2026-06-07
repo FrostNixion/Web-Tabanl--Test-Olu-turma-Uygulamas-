@@ -88,7 +88,7 @@ public class StudentController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SubmitTest(TakeTestViewModel model, IFormCollection form)
+    public async Task<IActionResult> SubmitTest(TakeTestViewModel model)
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
@@ -113,19 +113,14 @@ public class StudentController : Controller
             {
                 totalPoints += question.Points;
                 
-                // Get the selected option index from the form
-                string selectedOptionKey = $"Questions[{i}].SelectedOption";
-                if (form.ContainsKey(selectedOptionKey))
+                // Use the SelectedOption from the model (which is the index)
+                if (questionVm.SelectedOption >= 0 && questionVm.SelectedOption < questionVm.Options.Count)
                 {
-                    string? selectedValue = form[selectedOptionKey];
-                    if (int.TryParse(selectedValue, out int selectedIndex) && selectedIndex >= 0 && selectedIndex < questionVm.Options.Count)
+                    var selectedOption = questionVm.Options[questionVm.SelectedOption];
+                    var option = question.Options.FirstOrDefault(o => o.Id == selectedOption.OptionId);
+                    if (option != null && option.IsCorrect)
                     {
-                        var selectedOption = questionVm.Options[selectedIndex];
-                        var option = question.Options.FirstOrDefault(o => o.Id == selectedOption.OptionId);
-                        if (option != null && option.IsCorrect)
-                        {
-                            totalScore += question.Points;
-                        }
+                        totalScore += question.Points;
                     }
                 }
             }
@@ -141,7 +136,16 @@ public class StudentController : Controller
 
         await _repository.AddTestResultAsync(testResult);
 
-        return RedirectToAction("ViewResult", new { id = testResult.Id });
+        // Verify the result was saved
+        var savedResult = await _repository.GetTestResultByStudentAndTestAsync(user.Id, test.Id);
+        if (savedResult == null)
+        {
+            // Log error or handle the case where save failed
+            ModelState.AddModelError("", "Sonuç kaydedilemedi. Lütfen tekrar deneyin.");
+            return RedirectToAction("TakeTest", new { id = test.Id });
+        }
+
+        return RedirectToAction("ViewResult", new { id = savedResult.Id });
     }
 
     public async Task<IActionResult> ViewResult(int id)
@@ -173,7 +177,18 @@ public class StudentController : Controller
             Score = result.Score,
             TotalPoints = totalPoints,
             TakenAt = result.TakenAt,
-            Questions = new List<ResultQuestionViewModel>()
+            Questions = test.Questions.Select(q => new ResultQuestionViewModel
+            {
+                QuestionId = q.Id,
+                QuestionText = q.QuestionText,
+                Points = q.Points,
+                Options = q.Options.Select(o => new ResultOptionViewModel
+                {
+                    OptionId = o.Id,
+                    OptionText = o.OptionText,
+                    IsCorrect = o.IsCorrect
+                }).ToList()
+            }).ToList()
         };
 
         return View(model);
@@ -188,14 +203,8 @@ public class StudentController : Controller
         }
 
         var results = await _repository.GetTestResultsByStudentIdAsync(user.Id);
-        var resultsWithTests = new List<(TestResult Result, Test? Test)>();
+        var resultsWithTests = results.Select(r => (r, r.Test)).OrderByDescending(x => x.r.TakenAt).ToList();
 
-        foreach (var result in results)
-        {
-            var test = await _repository.GetTestByIdAsync(result.TestId);
-            resultsWithTests.Add((result, test));
-        }
-
-        return View(resultsWithTests.OrderByDescending(x => x.Result.TakenAt).ToList());
+        return View(resultsWithTests);
     }
 }

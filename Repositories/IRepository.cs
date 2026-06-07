@@ -7,6 +7,10 @@ public interface IRepository
     // User operations
     Task<ApplicationUser?> GetUserByIdAsync(string id);
     Task<ApplicationUser?> GetUserByEmailAsync(string email);
+    Task<List<ApplicationUser>> GetAllUsersAsync();
+    Task<List<ApplicationUser>> GetUsersByRoleAsync(string role);
+    Task AddUserAsync(ApplicationUser user, string password);
+    Task DeleteUserAsync(string id);
 
     // Test operations
     Task<Test?> GetTestByIdAsync(int id);
@@ -35,8 +39,10 @@ public interface IRepository
     Task<List<TestResult>> GetTestResultsByTestIdAsync(int testId);
     Task<List<TestResult>> GetTestResultsByStudentIdAsync(string studentId);
     Task<TestResult?> GetTestResultByStudentAndTestAsync(string studentId, int testId);
+    Task<List<TestResult>> GetAllTestResultsAsync();
     Task AddTestResultAsync(TestResult testResult);
     Task UpdateTestResultAsync(TestResult testResult);
+    Task DeleteTestResultAsync(int id);
 
     // Save changes
     Task SaveChangesAsync();

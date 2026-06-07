@@ -18,6 +18,11 @@ public static class SeedData
         context.Database.EnsureCreated();
 
         // Seed Roles
+        if (!await roleManager.RoleExistsAsync("Admin"))
+        {
+            await roleManager.CreateAsync(new IdentityRole("Admin"));
+        }
+
         if (!await roleManager.RoleExistsAsync("Teacher"))
         {
             await roleManager.CreateAsync(new IdentityRole("Teacher"));
@@ -26,6 +31,26 @@ public static class SeedData
         if (!await roleManager.RoleExistsAsync("Student"))
         {
             await roleManager.CreateAsync(new IdentityRole("Student"));
+        }
+
+        // Seed Admin User
+        var adminUser = await userManager.FindByEmailAsync("admin@test.com");
+        if (adminUser == null)
+        {
+            adminUser = new ApplicationUser
+            {
+                UserName = "admin@test.com",
+                Email = "admin@test.com",
+                Name = "Admin",
+                Surname = "User",
+                Role = "Admin",
+                EmailConfirmed = true
+            };
+            var result = await userManager.CreateAsync(adminUser, "Admin123!");
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(adminUser, "Admin");
+            }
         }
 
         // Seed Teacher User
