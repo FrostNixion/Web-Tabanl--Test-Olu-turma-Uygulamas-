@@ -15,6 +15,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Question> Questions { get; set; }
     public DbSet<Option> Options { get; set; }
     public DbSet<TestResult> TestResults { get; set; }
+    public DbSet<TestAssignment> TestAssignments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -58,6 +59,21 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasOne(tr => tr.Test)
                   .WithMany(t => t.TestResults)
                   .HasForeignKey(tr => tr.TestId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        builder.Entity<TestAssignment>(entity =>
+        {
+            entity.HasKey(a => new { a.TestId, a.StudentId });
+
+            entity.HasOne(a => a.Test)
+                  .WithMany(t => t.Assignments)
+                  .HasForeignKey(a => a.TestId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(a => a.Student)
+                  .WithMany()
+                  .HasForeignKey(a => a.StudentId)
                   .OnDelete(DeleteBehavior.Cascade);
         });
     }

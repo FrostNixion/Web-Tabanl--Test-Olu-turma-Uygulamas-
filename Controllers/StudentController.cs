@@ -27,7 +27,7 @@ public class StudentController : Controller
             return RedirectToAction("Login", "Account");
         }
 
-        var allTests = await _repository.GetAllTestsAsync();
+        var allTests = await _repository.GetTestsForStudentAsync(user.Id);
         var studentResults = await _repository.GetTestResultsByStudentIdAsync(user.Id);
         var completedTestIds = studentResults.Select(tr => tr.TestId).ToHashSet();
 
@@ -35,6 +35,9 @@ public class StudentController : Controller
         {
             Test = t,
             IsCompleted = completedTestIds.Contains(t.Id),
+            ResultId = completedTestIds.Contains(t.Id)
+                ? studentResults.First(tr => tr.TestId == t.Id).Id
+                : (int?)null,
             Score = completedTestIds.Contains(t.Id) 
                 ? studentResults.First(tr => tr.TestId == t.Id).Score 
                 : (int?)null

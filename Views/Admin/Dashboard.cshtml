@@ -101,6 +101,7 @@
                             <p class="text-xs text-ink-500">@test.Questions.Count soru • @test.DurationInMinutes dakika</p>
                         </div>
                         <span class="badge badge-soft text-xs">@test.TestResults.Count katılım</span>
+                        <a asp-action="TestResults" asp-route-id="@test.Id" class="btn btn-soft py-2 text-sm">Sonuçlar</a>
                     </div>
                 }
             </div>

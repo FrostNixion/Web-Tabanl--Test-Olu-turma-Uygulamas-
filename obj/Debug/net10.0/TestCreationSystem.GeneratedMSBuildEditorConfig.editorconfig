@@ -17,96 +17,95 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.TargetFrameworkIdentifier = .NETCoreApp
 build_property.TargetFrameworkVersion = v10.0
-build_property.EntryPointFilePath = 
 build_property.RootNamespace = TestCreationSystem
 build_property.RootNamespace = TestCreationSystem
-build_property.ProjectDir = C:\Users\erenk\source\repos\winds\
+build_property.ProjectDir = C:\Web-Tabanl--Test-Olu-turma-Uygulamas-\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
-build_property.RazorLangVersion = 10.0
+build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\erenk\source\repos\winds
+build_property.MSBuildProjectDirectory = C:\Web-Tabanl--Test-Olu-turma-Uygulamas-
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/erenk/source/repos/winds/Views/Account/AccessDenied.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/Account/AccessDenied.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxBY2Nlc3NEZW5pZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/erenk/source/repos/winds/Views/Account/ChangePassword.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/Account/ChangePassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxDaGFuZ2VQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/erenk/source/repos/winds/Views/Account/Login.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/erenk/source/repos/winds/Views/Account/Register.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/Account/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/erenk/source/repos/winds/Views/Admin/CreateUser.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/Admin/CreateUser.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ3JlYXRlVXNlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/erenk/source/repos/winds/Views/Admin/Dashboard.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/Admin/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/erenk/source/repos/winds/Views/Admin/Users.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/Admin/Users.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVXNlcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/erenk/source/repos/winds/Views/Shared/_Layout.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/erenk/source/repos/winds/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/erenk/source/repos/winds/Views/Student/Dashboard.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/Student/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxEYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/erenk/source/repos/winds/Views/Student/History.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/Student/History.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxIaXN0b3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/erenk/source/repos/winds/Views/Student/TakeTest.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/Student/TakeTest.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxUYWtlVGVzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/erenk/source/repos/winds/Views/Student/ViewResult.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/Student/ViewResult.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxWaWV3UmVzdWx0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/erenk/source/repos/winds/Views/Teacher/CreateStudent.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/Teacher/CreateStudent.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhY2hlclxDcmVhdGVTdHVkZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/erenk/source/repos/winds/Views/Teacher/CreateTest.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/Teacher/CreateTest.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhY2hlclxDcmVhdGVUZXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/erenk/source/repos/winds/Views/Teacher/Dashboard.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/Teacher/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhY2hlclxEYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/erenk/source/repos/winds/Views/Teacher/Students.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/Teacher/Students.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhY2hlclxTdHVkZW50cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/erenk/source/repos/winds/Views/Teacher/TestResults.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/Teacher/TestResults.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhY2hlclxUZXN0UmVzdWx0cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/erenk/source/repos/winds/Views/_ViewImports.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/erenk/source/repos/winds/Views/_ViewStart.cshtml]
+[C:/Web-Tabanl--Test-Olu-turma-Uygulamas-/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

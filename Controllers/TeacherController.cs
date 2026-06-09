@@ -33,10 +33,18 @@ public class TeacherController : Controller
         return View(tests);
     }
 
-    public IActionResult CreateTest()
+    public async Task<IActionResult> CreateTest()
     {
+        var students = await _repository.GetUsersByRoleAsync("Student");
         var model = new CreateTestViewModel
         {
+            Students = students.Select(s => new StudentPickerItemViewModel
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Surname = s.Surname,
+                Email = s.Email ?? string.Empty
+            }).ToList(),
             Questions = new List<QuestionViewModel>
             {
                 new QuestionViewModel
@@ -60,6 +68,14 @@ public class TeacherController : Controller
     {
         if (!ModelState.IsValid)
         {
+            var students = await _repository.GetUsersByRoleAsync("Student");
+            model.Students = students.Select(s => new StudentPickerItemViewModel
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Surname = s.Surname,
+                Email = s.Email ?? string.Empty
+            }).ToList();
             return View(model);
         }
 
@@ -102,6 +118,19 @@ public class TeacherController : Controller
 
                 await _repository.AddOptionAsync(option);
             }
+        }
+
+        if (model.SelectedStudentIds.Any())
+        {
+            var distinctStudentIds = model.SelectedStudentIds.Where(id => !string.IsNullOrWhiteSpace(id)).Distinct().ToList();
+            var assignments = distinctStudentIds.Select(studentId => new TestAssignment
+            {
+                TestId = test.Id,
+                StudentId = studentId,
+                AssignedAt = DateTime.UtcNow
+            });
+
+            await _repository.AddTestAssignmentsAsync(assignments);
         }
 
         return RedirectToAction("Dashboard");

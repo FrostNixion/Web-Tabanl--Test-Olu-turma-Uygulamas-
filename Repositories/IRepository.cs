@@ -16,9 +16,12 @@ public interface IRepository
     Task<Test?> GetTestByIdAsync(int id);
     Task<List<Test>> GetAllTestsAsync();
     Task<List<Test>> GetTestsByTeacherIdAsync(string teacherId);
+    Task<List<Test>> GetTestsForStudentAsync(string studentId);
     Task AddTestAsync(Test test);
     Task UpdateTestAsync(Test test);
     Task DeleteTestAsync(int id);
+
+    Task AddTestAssignmentsAsync(IEnumerable<TestAssignment> assignments);
 
     // Question operations
     Task<Question?> GetQuestionByIdAsync(int id);

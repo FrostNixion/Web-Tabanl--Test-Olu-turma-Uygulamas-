@@ -29,7 +29,7 @@
 
                 <div class="card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div class="flex-1">
-                        <h3 class="font-semibold text-ink text-lg mb-1">@test?.Title ?? "Silinmiş Sınav"</h3>
+                        <h3 class="font-semibold text-ink text-lg mb-1">@((test?.Title) ?? "")</h3>
                         <p class="text-sm text-ink-500">@result.TakenAt.ToString("dd MMMM yyyy, HH:mm")</p>
                     </div>
 

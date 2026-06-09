@@ -18,7 +18,19 @@ public class CreateTestViewModel
     [Display(Name = "Süre (Dakika)")]
     public int DurationInMinutes { get; set; }
 
+    public List<string> SelectedStudentIds { get; set; } = new();
+
+    public List<StudentPickerItemViewModel> Students { get; set; } = new();
+
     public List<QuestionViewModel> Questions { get; set; } = new List<QuestionViewModel>();
+}
+
+public class StudentPickerItemViewModel
+{
+    public string Id { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string Surname { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
 }
 
 public class QuestionViewModel

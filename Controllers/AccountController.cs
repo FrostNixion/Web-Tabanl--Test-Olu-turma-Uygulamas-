@@ -24,16 +24,34 @@ public class AccountController : Controller
     }
 
     [HttpGet]
-    public IActionResult Login()
+    public async Task<IActionResult> Login()
     {
         if (User.Identity?.IsAuthenticated == true)
         {
-            if (User.IsInRole("Admin"))
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                await _signInManager.SignOutAsync();
+                return View();
+            }
+
+            if (await _userManager.IsInRoleAsync(user, "Admin"))
             {
                 return RedirectToAction("Dashboard", "Admin");
             }
-            return RedirectToAction("Dashboard", User.IsInRole("Teacher") ? "Teacher" : "Student");
+            if (await _userManager.IsInRoleAsync(user, "Teacher"))
+            {
+                return RedirectToAction("Dashboard", "Teacher");
+            }
+            if (await _userManager.IsInRoleAsync(user, "Student"))
+            {
+                return RedirectToAction("Dashboard", "Student");
+            }
+
+            await _signInManager.SignOutAsync();
+            return View();
         }
+
         return View();
     }
 

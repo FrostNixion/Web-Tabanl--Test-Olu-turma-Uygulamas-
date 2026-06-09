@@ -78,6 +78,7 @@ public class Repository : IRepository
         return await _context.Tests
             .Include(t => t.Questions)
             .Include(t => t.CreatedByTeacher)
+            .Include(t => t.Assignments)
             .OrderByDescending(t => t.CreatedAt)
             .ToListAsync();
     }
@@ -88,7 +89,19 @@ public class Repository : IRepository
             .Include(t => t.Questions)
             .Include(t => t.TestResults)
             .ThenInclude(tr => tr.Student)
+            .Include(t => t.Assignments)
             .Where(t => t.CreatedByTeacherId == teacherId)
+            .OrderByDescending(t => t.CreatedAt)
+            .ToListAsync();
+    }
+
+    public async Task<List<Test>> GetTestsForStudentAsync(string studentId)
+    {
+        return await _context.Tests
+            .Include(t => t.Questions)
+            .Include(t => t.CreatedByTeacher)
+            .Include(t => t.Assignments)
+            .Where(t => !t.Assignments.Any() || t.Assignments.Any(a => a.StudentId == studentId))
             .OrderByDescending(t => t.CreatedAt)
             .ToListAsync();
     }
@@ -113,6 +126,12 @@ public class Repository : IRepository
             _context.Tests.Remove(test);
             await _context.SaveChangesAsync();
         }
+    }
+
+    public async Task AddTestAssignmentsAsync(IEnumerable<TestAssignment> assignments)
+    {
+        _context.TestAssignments.AddRange(assignments);
+        await _context.SaveChangesAsync();
     }
 
     // Question operations

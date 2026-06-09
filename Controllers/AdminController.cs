@@ -115,8 +115,21 @@ public class AdminController : Controller
 
         try
         {
+            if (!await _roleManager.RoleExistsAsync(model.Role))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(model.Role));
+            }
+
             await _repository.AddUserAsync(user, model.Password);
-            await _userManager.AddToRoleAsync(user, model.Role);
+            var addToRoleResult = await _userManager.AddToRoleAsync(user, model.Role);
+            if (!addToRoleResult.Succeeded)
+            {
+                foreach (var error in addToRoleResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return View(model);
+            }
             return RedirectToAction("Users");
         }
         catch (Exception ex)
@@ -124,6 +137,19 @@ public class AdminController : Controller
             ModelState.AddModelError(string.Empty, ex.Message);
             return View(model);
         }
+    }
+
+    public async Task<IActionResult> TestResults(int id)
+    {
+        var test = await _repository.GetTestByIdAsync(id);
+        if (test == null)
+        {
+            return NotFound();
+        }
+
+        var results = await _repository.GetTestResultsByTestIdAsync(id);
+        ViewBag.TestTitle = test.Title;
+        return View("~/Views/Teacher/TestResults.cshtml", results);
     }
 
     public async Task<IActionResult> DeleteUser(string id)

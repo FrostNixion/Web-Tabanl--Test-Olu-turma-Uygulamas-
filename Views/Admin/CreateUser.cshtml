@@ -14,7 +14,10 @@
     </div>
 
     <div class="card p-6">
-        <form method="post">
+        <form asp-action="CreateUser" asp-controller="Admin" method="post">
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="All" class="text-sm text-[var(--danger)] bg-[#fef2f2] border border-[#fecaca] rounded-[10px] px-4 py-3 mb-4 empty:hidden"></div>
             <div class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-ink mb-2">Ad</label>

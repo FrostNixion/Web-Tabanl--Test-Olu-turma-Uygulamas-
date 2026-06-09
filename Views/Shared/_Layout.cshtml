@@ -1,5 +1,6 @@
 @{
     var isTeacher = User.IsInRole("Teacher");
+    var isAdmin = User.IsInRole("Admin");
     var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
     var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
     string ActiveIf(string ctrl, string act) =>
@@ -49,7 +50,12 @@
                         </a>
 
                         <div class="hidden md:flex items-center gap-1">
-                            @if (isTeacher)
+                            @if (isAdmin)
+                            {
+                                <a asp-controller="Admin" asp-action="Dashboard" class="nav-link @ActiveIf("Admin", "Dashboard")">Panel</a>
+                                <a asp-controller="Admin" asp-action="Users" class="nav-link @ActiveIf("Admin", "Users")">Kullanıcılar</a>
+                            }
+                            else if (isTeacher)
                             {
                                 <a asp-controller="Teacher" asp-action="Dashboard" class="nav-link @ActiveIf("Teacher", "Dashboard")">Panelim</a>
                                 <a asp-controller="Teacher" asp-action="CreateTest" class="nav-link @ActiveIf("Teacher", "CreateTest")">Sınav Oluştur</a>
@@ -70,7 +76,7 @@
                             </span>
                             <div class="leading-tight">
                                 <p class="text-sm font-semibold text-ink">@User.Identity?.Name</p>
-                                <p class="text-xs text-ink-500">@(isTeacher ? "Öğretmen" : "Öğrenci")</p>
+                                <p class="text-xs text-ink-500">@(isAdmin ? "Admin" : isTeacher ? "Öğretmen" : "Öğrenci")</p>
                             </div>
                         </div>
                         <a asp-controller="Account" asp-action="ChangePassword" class="nav-link text-sm">Şifre</a>
@@ -98,10 +104,15 @@
                         </span>
                         <div>
                             <p class="text-sm font-semibold text-ink">@User.Identity?.Name</p>
-                            <p class="text-xs text-ink-500">@(isTeacher ? "Öğretmen" : "Öğrenci")</p>
+                            <p class="text-xs text-ink-500">@(isAdmin ? "Admin" : isTeacher ? "Öğretmen" : "Öğrenci")</p>
                         </div>
                     </div>
-                    @if (isTeacher)
+                    @if (isAdmin)
+                    {
+                        <a asp-controller="Admin" asp-action="Dashboard" class="nav-link block">Panel</a>
+                        <a asp-controller="Admin" asp-action="Users" class="nav-link block">Kullanıcılar</a>
+                    }
+                    else if (isTeacher)
                     {
                         <a asp-controller="Teacher" asp-action="Dashboard" class="nav-link block">Panelim</a>
                         <a asp-controller="Teacher" asp-action="CreateTest" class="nav-link block">Sınav Oluştur</a>
