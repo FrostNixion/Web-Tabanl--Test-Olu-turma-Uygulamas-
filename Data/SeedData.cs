@@ -17,6 +17,22 @@ public static class SeedData
         // Ensure database is created
         context.Database.EnsureCreated();
 
+        await context.Database.ExecuteSqlRawAsync(@"
+IF OBJECT_ID(N'[dbo].[TestAssignments]', N'U') IS NULL
+BEGIN
+    CREATE TABLE [dbo].[TestAssignments] (
+        [TestId] int NOT NULL,
+        [StudentId] nvarchar(450) NOT NULL,
+        [AssignedAt] datetime2 NOT NULL,
+        CONSTRAINT [PK_TestAssignments] PRIMARY KEY ([TestId], [StudentId]),
+        CONSTRAINT [FK_TestAssignments_Tests_TestId] FOREIGN KEY ([TestId]) REFERENCES [dbo].[Tests] ([Id]) ON DELETE CASCADE,
+        CONSTRAINT [FK_TestAssignments_AspNetUsers_StudentId] FOREIGN KEY ([StudentId]) REFERENCES [dbo].[AspNetUsers] ([Id]) ON DELETE CASCADE
+    );
+
+    CREATE INDEX [IX_TestAssignments_StudentId] ON [dbo].[TestAssignments] ([StudentId]);
+END
+");
+
         // Seed Roles
         if (!await roleManager.RoleExistsAsync("Admin"))
         {
